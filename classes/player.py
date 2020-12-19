@@ -3,6 +3,7 @@ import random
 from classes.spell import Magic
 from classes.inventory import Item
 
+
 # create the spells
 fire = Magic("Fire", 10, 20, "black")
 quake = Magic("quake", 20, 50, "black")
@@ -36,7 +37,7 @@ class Colors:
 
 
 class Person:
-    def __init__(self, name, hp, mp, atk, df,live):
+    def __init__(self, name, hp, mp, atk, df, dfm, live):
         self.live = live
         self.hp = hp
         self.max_hp = hp
@@ -48,6 +49,7 @@ class Person:
         self.magics = magic
         self.actions = ["Attack", "Magic", "Use item from inventory"]
         self.items = inventory
+        self.dfm = dfm
 
     def generate_damage(self):
         atk_low = self.atk - 10
@@ -56,6 +58,9 @@ class Person:
 
     def get_hp(self):
         return self.hp
+
+    def get_dfm(self):
+        return self.dfm
 
     def get_df(self):
         return self.df
@@ -131,20 +136,37 @@ class Person:
             i += 1
 
     def print_status(self):
-        spaceHP = 15
-        spaceMP = 30
-        space = 2
-        blocks_h = math.ceil(((self.get_hp() / self.get_max_hp())/4)*100)
-        block_m = math.ceil((self.get_mp() / self.get_max_mp())*10)
-        print("NAME{0}HP{1}MP".format(" " * spaceHP, " " * spaceMP))
+        spacehp = 15
+        spacemp = 30
+        blocks_h = math.ceil(((self.get_hp() / self.get_max_hp()) / 4) * 100)
+        block_m = math.ceil((self.get_mp() / self.get_max_mp()) * 10)
+        print("NAME{0}HP{1}MP".format(" " * spacehp, " " * spacemp))
         print("{bold}{space_hp}{end}{get_hp}{blockg}{mp}{space_mp}{get_mp}{blockb}".format(
             bold=Colors.BOLD + self.get_name(),
             end=Colors.END,
-            space_hp=" " * (spaceHP - len(self.get_name())),
-            get_hp=" "*(3-len(str(self.get_hp())))+str(self.get_hp()) + "/" + str(self.get_max_hp()),
+            space_hp=" " * (spacehp - len(self.get_name())),
+            get_hp=" " * (3 - len(str(self.get_hp()))) + str(self.get_hp()) + "/" + str(self.get_max_hp()),
             blockg="|" + Colors.GREEN + "█" * blocks_h + Colors.END,
             mp=" " * (25 - blocks_h) + "|",
-            get_mp=" "*(2-len(str(self.get_mp())))+str(self.get_mp()) + "/" + str(self.get_max_mp()),
+            get_mp=" " * (2 - len(str(self.get_mp()))) + str(self.get_mp()) + "/" + str(self.get_max_mp()),
+            blockb="|" + Colors.BLUE + "█" * block_m + Colors.END + " " * (10 - block_m) + "|",
+            space_mp=" " * 5
+        ))
+
+    def print_enemy_status(self):
+        spacehp = 15
+        spacemp = 30
+        blocks_h = math.ceil(((self.get_hp() / self.get_max_hp()) / 4) * 100)
+        block_m = math.ceil((self.get_mp() / self.get_max_mp()) * 10)
+        print("NAME{0}HP{1}MP".format(" " * spacehp, " " * spacemp))
+        print("{bold}{space_hp}{end}{get_hp}{blockg}{mp}{space_mp}{get_mp}{blockb}".format(
+            bold=Colors.BOLD + self.get_name(),
+            end=Colors.END,
+            space_hp=" " * (spacehp - len(self.get_name())),
+            get_hp=" " * (3 - len(str(self.get_hp()))) + str(self.get_hp()) + "/" + str(self.get_max_hp()),
+            blockg="|" + Colors.FAIL + "█" * blocks_h + Colors.END,
+            mp=" " * (25 - blocks_h) + "|",
+            get_mp=" " * (2 - len(str(self.get_mp()))) + str(self.get_mp()) + "/" + str(self.get_max_mp()),
             blockb="|" + Colors.BLUE + "█" * block_m + Colors.END + " " * (10 - block_m) + "|",
             space_mp=" " * 5
         ))
